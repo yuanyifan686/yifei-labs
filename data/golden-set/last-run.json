@@ -1,0 +1,35 @@
+{
+  "ranAt": "2026-07-10T09:12:16.329Z",
+  "pass": 4,
+  "total": 4,
+  "results": [
+    {
+      "id": "ai-agent-mid",
+      "label": "AI Agent 应用开发",
+      "topTitle": "AI Agent 应用开发工程师",
+      "score": 7,
+      "pass": true
+    },
+    {
+      "id": "rag-engineer",
+      "label": "RAG 工程师",
+      "topTitle": "向量数据库工程师",
+      "score": 5,
+      "pass": true
+    },
+    {
+      "id": "pm-switch",
+      "label": "产品转 AI PM",
+      "topTitle": "AI 产品经理",
+      "score": 3,
+      "pass": true
+    },
+    {
+      "id": "new-grad",
+      "label": "应届生",
+      "topTitle": "前端全栈工程师（AI 方向）",
+      "score": 4,
+      "pass": true
+    }
+  ]
+}

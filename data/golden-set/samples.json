@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ai-agent-mid",
+    "label": "AI Agent 应用开发",
+    "resume": "拥有 2 年 AI 应用开发经验，熟悉 Python、OpenAI API、Function Calling、LangChain、RAG 与 React。独立完成多智能体工作流平台与企业知识库问答，线上服务稳定运行。",
+    "expectTopTitleIncludes": ["Agent", "智能体", "RAG", "大模型", "AI"],
+    "mustHitSkills": ["Python", "RAG", "Agent"],
+    "notes": "主样例"
+  },
+  {
+    "id": "rag-engineer",
+    "label": "RAG 工程师",
+    "resume": "专注检索增强生成，熟悉 Embedding、向量数据库 Milvus/Qdrant、Chunking 策略与评测集建设。有电商知识库问答项目，提升召回率 15%。Python 扎实。",
+    "expectTopTitleIncludes": ["RAG", "知识库", "检索", "Embedding", "向量"],
+    "mustHitSkills": ["RAG", "Embedding", "Python"],
+    "notes": "技术深度"
+  },
+  {
+    "id": "pm-switch",
+    "label": "产品转 AI PM",
+    "resume": "5 年 ToB 产品经理经验，擅长 PRD、路线图与客户调研。近一年主导大模型客服助手需求，协同研发完成 Agent 工具编排与上线验收。",
+    "expectTopTitleIncludes": ["产品", "解决方案", "AI"],
+    "mustHitSkills": ["Product Management"],
+    "notes": "转行样例"
+  },
+  {
+    "id": "new-grad",
+    "label": "应届生",
+    "resume": "计算机应届生，课程项目：基于 React 与 Node.js 的校园论坛；实习期间参与数据标注与简单 Prompt 评测。熟悉 Python 基础与 Git。",
+    "expectTopTitleIncludes": ["初级", "全栈", "测试", "标注", "AI"],
+    "mustHitSkills": ["Python", "React"],
+    "notes": "低经验"
+  }
+]

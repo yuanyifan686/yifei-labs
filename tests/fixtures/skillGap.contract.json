@@ -1,0 +1,61 @@
+{
+  "targetRole": "RAG 工程师",
+  "readinessScore": 72,
+  "marketFitScore": 68,
+  "summary": "具备基础 RAG 能力，评测与线上稳定性仍需补强。",
+  "matchedStrengths": ["Python", "RAG"],
+  "missingSkills": ["评测体系", "可观测性"],
+  "learningPriorities": ["补齐评测与回归集"],
+  "resumeImprovements": ["量化检索准确率提升"],
+  "interviewPrepTips": ["准备一次检索失败案例分析"],
+  "suggestedKeywords": ["评测", "召回"],
+  "evidenceScores": [
+    {
+      "category": "skill_coverage",
+      "label": "技能覆盖",
+      "score": 78,
+      "max": 100,
+      "evidence": ["简历中出现 Python、RAG、LangChain"],
+      "risks": [],
+      "nextActions": ["补充评测相关技能表述"]
+    },
+    {
+      "category": "project_depth",
+      "label": "项目深度",
+      "score": 65,
+      "max": 100,
+      "evidence": ["有 RAG 项目描述"],
+      "risks": ["缺少业务指标与用户规模"],
+      "nextActions": ["补充准确率/延迟等结果"]
+    },
+    {
+      "category": "production_experience",
+      "label": "生产经验",
+      "score": 55,
+      "max": 100,
+      "evidence": ["有项目描述但缺少线上稳定性说明"],
+      "risks": ["生产协作边界不清晰"],
+      "nextActions": ["补充上线与监控经验"]
+    },
+    {
+      "category": "proof_assets",
+      "label": "证明资产",
+      "score": 48,
+      "max": 100,
+      "evidence": ["未提供可访问 Demo"],
+      "risks": ["项目缺少链接，可信度弱"],
+      "nextActions": ["补充 GitHub / Demo"]
+    },
+    {
+      "category": "role_fit",
+      "label": "岗位贴合",
+      "score": 70,
+      "max": 100,
+      "evidence": ["与 RAG 关键词匹配"],
+      "risks": [],
+      "nextActions": ["对齐评测体系关键词"]
+    }
+  ],
+  "riskFlags": ["项目缺少链接，可信度弱", "缺少业务指标与用户规模"],
+  "nextActions": ["补充 GitHub / Demo", "补充准确率/延迟等结果"]
+}

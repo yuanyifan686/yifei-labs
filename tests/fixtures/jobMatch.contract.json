@@ -1,0 +1,27 @@
+{
+  "candidateSummary": "候选人具备 Python 与 RAG 实践。",
+  "recommendedRoles": [
+    {
+      "title": "RAG 知识库工程师",
+      "company": "示例科技",
+      "location": "上海",
+      "matchScore": 86,
+      "scoreDimensions": {
+        "skillCoverage": 88,
+        "experienceFit": 75,
+        "directionFit": 90,
+        "locationFit": 80,
+        "overall": 86
+      },
+      "recommendedLevel": "良好匹配",
+      "reason": "技能与方向高度重合。",
+      "strengths": ["简历已体现 Python", "简历已体现 RAG"],
+      "gaps": ["岗位要求 评测，简历证据不足"],
+      "suggestedResumeKeywords": ["评测", "Embedding"],
+      "matchedKeywords": ["Python", "RAG"],
+      "resumeTips": ["突出知识库项目结果"],
+      "isSynthetic": true
+    }
+  ],
+  "aggregateGaps": ["评测"]
+}

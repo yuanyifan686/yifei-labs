@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Yifei Labs JD 导入",
+  "description": "从 Boss 直聘 / 智联招聘页面提取岗位信息，一键导入 Yifei Labs 做能力诊断。",
+  "version": "1.0.0",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": [
+    "https://www.zhipin.com/*",
+    "https://www.zhaopin.com/*",
+    "https://sou.zhaopin.com/*",
+    "http://localhost:3000/*"
+  ],
+  "action": {
+    "default_title": "导入 JD 到 Yifei Labs",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.zhipin.com/*",
+        "https://www.zhaopin.com/*",
+        "https://sou.zhaopin.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
