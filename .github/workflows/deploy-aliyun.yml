@@ -1,11 +1,11 @@
-# 推送到 main/master 后，经 SSH 在阿里云服务器上 pull + build + pm2 重启
-# 配置步骤见 docs/DEPLOY_ALIYUN_GITHUB.md
 name: Deploy Aliyun
 
 on:
   push:
-    branches: [main, master]
-  workflow_dispatch: # 允许在 GitHub 网页上手动点「Run workflow」
+    branches:
+      - main
+      - master
+  workflow_dispatch:
 
 concurrency:
   group: deploy-aliyun
@@ -14,67 +14,105 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Deploy over SSH
-        uses: appleboy/ssh-action@v1.2.0
+        uses: appleboy/ssh-action@v1.2.5
+
         env:
           APP_PATH: ${{ secrets.ALIYUN_APP_PATH }}
           APP_PORT: ${{ secrets.ALIYUN_APP_PORT }}
           PM2_NAME: ${{ secrets.ALIYUN_PM2_NAME }}
+          DEPLOY_BRANCH: ${{ github.ref_name }}
+
         with:
           host: ${{ secrets.ALIYUN_HOST }}
           username: ${{ secrets.ALIYUN_USER }}
           key: ${{ secrets.ALIYUN_SSH_KEY }}
-          port: ${{ secrets.ALIYUN_SSH_PORT }}
+          port: 22
           command_timeout: 20m
-          script_stop: true
-          envs: APP_PATH,APP_PORT,PM2_NAME
+          debug: true
+          envs: APP_PATH,APP_PORT,PM2_NAME,DEPLOY_BRANCH
+
           script: |
-            set -euo pipefail
+            set -euxo pipefail
+
+            echo "==> SSH connected"
+            whoami
+            hostname
+
             if [ -z "${APP_PATH:-}" ]; then
-              echo "Missing secret ALIYUN_APP_PATH"
+              echo "Missing secret: ALIYUN_APP_PATH"
               exit 1
             fi
+
             APP_PORT="${APP_PORT:-3001}"
-            PM2_NAME="${PM2_NAME:-yifei-labs}"
+            PM2_NAME="${PM2_NAME:-yifei_labs}"
+            DEPLOY_BRANCH="${DEPLOY_BRANCH:-main}"
+
+            echo "APP_PATH=$APP_PATH"
+            echo "APP_PORT=$APP_PORT"
+            echo "PM2_NAME=$PM2_NAME"
+            echo "DEPLOY_BRANCH=$DEPLOY_BRANCH"
 
             export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-            export PATH="/usr/local/bin:/usr/bin:$HOME/.local/bin:$PATH"
 
-            cd "$APP_PATH"
-
-            echo "==> git pull"
-            git fetch origin
-            if git rev-parse --verify origin/master >/dev/null 2>&1; then
-              git checkout master
-              git reset --hard origin/master
-            else
-              git checkout main
-              git reset --hard origin/main
+            if [ -s "$NVM_DIR/nvm.sh" ]; then
+              . "$NVM_DIR/nvm.sh"
             fi
 
-            echo "==> install & build"
+            export PATH="/usr/local/bin:/usr/bin:$HOME/.local/bin:$PATH"
+
+            echo "==> Check runtime"
+            node -v
+            npm -v
+            git --version
+            pm2 -v
+
+            echo "==> Check application directory"
+            test -d "$APP_PATH"
+            cd "$APP_PATH"
+
+            pwd
+            ls -la
+
+            if [ ! -d .git ]; then
+              echo "$APP_PATH is not a Git repository"
+              exit 1
+            fi
+
+            echo "==> Fetch branch: $DEPLOY_BRANCH"
+            git fetch origin "$DEPLOY_BRANCH"
+            git checkout -B "$DEPLOY_BRANCH" "origin/$DEPLOY_BRANCH"
+            git reset --hard "origin/$DEPLOY_BRANCH"
+
+            echo "==> Install dependencies"
             if [ -f package-lock.json ]; then
               npm ci
             else
               npm install
             fi
+
+            echo "==> Build application"
             export NEXT_TELEMETRY_DISABLED=1
             npm run build
 
-            echo "==> restart pm2 ($PM2_NAME) on port $APP_PORT"
-            if command -v pm2 >/dev/null 2>&1; then
-              if pm2 describe "$PM2_NAME" >/dev/null 2>&1; then
-                PORT="$APP_PORT" pm2 restart "$PM2_NAME" --update-env
-              else
-                PORT="$APP_PORT" pm2 start npm --name "$PM2_NAME" -- start
-              fi
-              pm2 save
+            echo "==> Restart PM2"
+
+            if pm2 describe "$PM2_NAME" >/dev/null 2>&1; then
+              PORT="$APP_PORT" NODE_ENV=production \
+                pm2 restart "$PM2_NAME" --update-env
             else
-              echo "pm2 not found; start manually: PORT=$APP_PORT npm start"
-              exit 1
+              PORT="$APP_PORT" NODE_ENV=production \
+                pm2 start npm --name "$PM2_NAME" -- start
             fi
 
-            echo "==> deploy ok"
-            pm2 status "$PM2_NAME" || true
+            pm2 save
+
+            echo "==> Health check"
+            sleep 3
+            pm2 status "$PM2_NAME"
+            curl --fail --silent --show-error \
+              "http://127.0.0.1:$APP_PORT" >/dev/null
+
+            echo "==> Deploy completed successfully"
