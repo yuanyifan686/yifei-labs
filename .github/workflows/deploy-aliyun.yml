@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+
   workflow_dispatch:
 
 concurrency:
@@ -31,7 +32,6 @@ jobs:
           key: ${{ secrets.ALIYUN_SSH_KEY }}
           port: 22
           command_timeout: 20m
-          debug: true
           envs: APP_PATH,APP_PORT,PM2_NAME,DEPLOY_BRANCH
 
           script: |
@@ -41,52 +41,39 @@ jobs:
             whoami
             hostname
 
+            APP_PORT="${APP_PORT:-3001}"
+            PM2_NAME="${PM2_NAME:-yifei_labs}"
+            DEPLOY_BRANCH="${DEPLOY_BRANCH:-main}"
+
             if [ -z "${APP_PATH:-}" ]; then
               echo "Missing secret: ALIYUN_APP_PATH"
               exit 1
             fi
 
-            APP_PORT="${APP_PORT:-3001}"
-            PM2_NAME="${PM2_NAME:-yifei_labs}"
-            DEPLOY_BRANCH="${DEPLOY_BRANCH:-main}"
-
-            echo "APP_PATH=$APP_PATH"
-            echo "APP_PORT=$APP_PORT"
-            echo "PM2_NAME=$PM2_NAME"
-            echo "DEPLOY_BRANCH=$DEPLOY_BRANCH"
-
-            export NVM_DIR="$HOME/.nvm"
-
-            if [ -s "$NVM_DIR/nvm.sh" ]; then
-              . "$NVM_DIR/nvm.sh"
-            fi
-
             export PATH="/usr/local/bin:/usr/bin:$HOME/.local/bin:$PATH"
 
-            echo "==> Check runtime"
+            echo "==> Runtime versions"
             node -v
             npm -v
             git --version
             pm2 -v
 
-            echo "==> Check application directory"
-            test -d "$APP_PATH"
+            echo "==> Enter project directory"
             cd "$APP_PATH"
 
-            pwd
-            ls -la
-
-            if [ ! -d .git ]; then
+            if [ ! -d ".git" ]; then
               echo "$APP_PATH is not a Git repository"
               exit 1
             fi
 
-            echo "==> Fetch branch: $DEPLOY_BRANCH"
+            echo "==> Pull branch: $DEPLOY_BRANCH"
             git fetch origin "$DEPLOY_BRANCH"
             git checkout -B "$DEPLOY_BRANCH" "origin/$DEPLOY_BRANCH"
             git reset --hard "origin/$DEPLOY_BRANCH"
 
             echo "==> Install dependencies"
+            npm config set registry https://registry.npmmirror.com
+
             if [ -f package-lock.json ]; then
               npm ci
             else
@@ -97,7 +84,7 @@ jobs:
             export NEXT_TELEMETRY_DISABLED=1
             npm run build
 
-            echo "==> Restart PM2"
+            echo "==> Start or restart PM2"
 
             if pm2 describe "$PM2_NAME" >/dev/null 2>&1; then
               PORT="$APP_PORT" NODE_ENV=production \
@@ -109,9 +96,13 @@ jobs:
 
             pm2 save
 
-            echo "==> Health check"
-            sleep 3
+            echo "==> Wait for application"
+            sleep 5
+
+            echo "==> PM2 status"
             pm2 status "$PM2_NAME"
+
+            echo "==> Health check"
             curl --fail --silent --show-error \
               "http://127.0.0.1:$APP_PORT" >/dev/null
 
