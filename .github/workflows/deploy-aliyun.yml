@@ -25,6 +25,9 @@ jobs:
           APP_PORT: ${{ secrets.ALIYUN_APP_PORT }}
           PM2_NAME: ${{ secrets.ALIYUN_PM2_NAME }}
           DEPLOY_BRANCH: ${{ github.ref_name }}
+          MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
+          MINIMAX_BASE_URL: ${{ secrets.MINIMAX_BASE_URL }}
+          AI_MODEL: ${{ secrets.AI_MODEL }}
 
         with:
           host: ${{ secrets.ALIYUN_HOST }}
@@ -32,7 +35,7 @@ jobs:
           key: ${{ secrets.ALIYUN_SSH_KEY }}
           port: 22
           command_timeout: 20m
-          envs: APP_PATH,APP_PORT,PM2_NAME,DEPLOY_BRANCH
+          envs: APP_PATH,APP_PORT,PM2_NAME,DEPLOY_BRANCH,MINIMAX_API_KEY,MINIMAX_BASE_URL,AI_MODEL
 
           script: |
             set -euxo pipefail
@@ -44,9 +47,16 @@ jobs:
             APP_PORT="${APP_PORT:-3001}"
             PM2_NAME="${PM2_NAME:-yifei_labs}"
             DEPLOY_BRANCH="${DEPLOY_BRANCH:-main}"
+            MINIMAX_BASE_URL="${MINIMAX_BASE_URL:-https://api.minimaxi.com/v1}"
+            AI_MODEL="${AI_MODEL:-MiniMax-M3}"
 
             if [ -z "${APP_PATH:-}" ]; then
               echo "Missing secret: ALIYUN_APP_PATH"
+              exit 1
+            fi
+
+            if [ -z "${MINIMAX_API_KEY:-}" ]; then
+              echo "Missing secret: MINIMAX_API_KEY"
               exit 1
             fi
 
@@ -79,6 +89,31 @@ jobs:
             else
               npm install
             fi
+
+            echo "==> Write server environment"
+            set +x
+            ENV_FILE=".env.local"
+            TMP_ENV="$(mktemp)"
+            if [ -f "$ENV_FILE" ]; then
+              awk '
+                /# BEGIN GITHUB_ACTIONS_AI_ENV/ { skip=1; next }
+                /# END GITHUB_ACTIONS_AI_ENV/ { skip=0; next }
+                skip != 1 { print }
+              ' "$ENV_FILE" > "$TMP_ENV"
+            else
+              : > "$TMP_ENV"
+            fi
+
+            cat >> "$TMP_ENV" <<EOF
+# BEGIN GITHUB_ACTIONS_AI_ENV
+MINIMAX_API_KEY=$MINIMAX_API_KEY
+MINIMAX_BASE_URL=$MINIMAX_BASE_URL
+AI_MODEL=$AI_MODEL
+# END GITHUB_ACTIONS_AI_ENV
+EOF
+            mv "$TMP_ENV" "$ENV_FILE"
+            chmod 600 "$ENV_FILE"
+            set -x
 
             echo "==> Build application"
             export NEXT_TELEMETRY_DISABLED=1
