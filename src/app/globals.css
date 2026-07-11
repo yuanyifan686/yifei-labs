@@ -2218,6 +2218,11 @@ button:focus-visible {
     min-height: auto;
   }
 
+  .hero-cockpit {
+    min-height: 300px;
+    margin-top: -18px;
+  }
+
   .hero-immersive-copy {
     position: relative;
     top: auto;
@@ -2276,6 +2281,10 @@ button:focus-visible {
 
   .hero-cockpit .resume-hud {
     display: block;
+    left: 0.75rem;
+    right: 0.75rem;
+    top: 18%;
+    padding: 0.875rem;
   }
 
   .hero-cockpit .resume-scan-stages {
@@ -2292,6 +2301,43 @@ button:focus-visible {
 
   .hero-cockpit .resume-scan-fallback {
     inset: 8% 24% 48% 24%;
+  }
+
+  .hero-cockpit .resume-hud-score {
+    position: absolute;
+    right: 0.75rem;
+    top: 0.75rem;
+  }
+
+  .hero-cockpit .resume-score-ring {
+    height: 58px;
+    width: 58px;
+  }
+
+  .hero-cockpit .resume-score-ring span {
+    font-size: 20px;
+  }
+
+  .career-route-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    overflow: visible;
+  }
+
+  .career-route-item,
+  .career-route-bar.is-compact .career-route-item {
+    min-width: 0;
+    flex: none;
+  }
+
+  .career-route-rail {
+    display: none;
+  }
+
+  .career-route-node {
+    min-height: 54px;
+    padding: 0.55rem 0.4rem;
   }
 
   .resume-doc-card {
