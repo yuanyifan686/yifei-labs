@@ -1547,3 +1547,80 @@
   └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
  POST /apps/job-match?mode=job-bank 200 in 17ms (next.js: 6ms, application-code: 11ms)
   └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 21ms (next.js: 6ms, application-code: 15ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 15ms (next.js: 6ms, application-code: 9ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 17ms (next.js: 5ms, application-code: 12ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 19ms (next.js: 7ms, application-code: 13ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 15ms (next.js: 6ms, application-code: 9ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 16ms (next.js: 5ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 17ms (next.js: 6ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 16ms (next.js: 6ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 15ms (next.js: 5ms, application-code: 10ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 16ms (next.js: 6ms, application-code: 10ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 1ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 16ms (next.js: 5ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 23ms (next.js: 8ms, application-code: 16ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 17ms (next.js: 5ms, application-code: 12ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 16ms (next.js: 4ms, application-code: 12ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 16ms (next.js: 6ms, application-code: 10ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 15ms (next.js: 5ms, application-code: 10ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 15ms (next.js: 5ms, application-code: 9ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 16ms (next.js: 5ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 15ms (next.js: 5ms, application-code: 10ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 20ms (next.js: 7ms, application-code: 13ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 17ms (next.js: 5ms, application-code: 12ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 16ms (next.js: 5ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 17ms (next.js: 6ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 15ms (next.js: 5ms, application-code: 10ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 16ms (next.js: 5ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 15ms (next.js: 6ms, application-code: 9ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 17ms (next.js: 6ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 17ms (next.js: 6ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 15ms (next.js: 5ms, application-code: 10ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 17ms (next.js: 6ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 15ms (next.js: 6ms, application-code: 10ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 16ms (next.js: 5ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 17ms (next.js: 6ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 16ms (next.js: 5ms, application-code: 11ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 21ms (next.js: 8ms, application-code: 13ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 14ms (next.js: 5ms, application-code: 9ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 23ms (next.js: 9ms, application-code: 14ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 22ms (next.js: 8ms, application-code: 15ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"cfc73365-4bed-410a-a61f-abef9df0eddd","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ GET / 200 in 70ms (next.js: 6ms, application-code: 64ms)

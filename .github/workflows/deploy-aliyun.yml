@@ -104,13 +104,14 @@ jobs:
               : > "$TMP_ENV"
             fi
 
-            cat >> "$TMP_ENV" <<EOF
-# BEGIN GITHUB_ACTIONS_AI_ENV
-MINIMAX_API_KEY=$MINIMAX_API_KEY
-MINIMAX_BASE_URL=$MINIMAX_BASE_URL
-AI_MODEL=$AI_MODEL
-# END GITHUB_ACTIONS_AI_ENV
-EOF
+            # Heredoc body must stay indented under script: | or YAML ends early.
+            {
+              printf '%s\n' '# BEGIN GITHUB_ACTIONS_AI_ENV'
+              printf 'MINIMAX_API_KEY=%s\n' "$MINIMAX_API_KEY"
+              printf 'MINIMAX_BASE_URL=%s\n' "$MINIMAX_BASE_URL"
+              printf 'AI_MODEL=%s\n' "$AI_MODEL"
+              printf '%s\n' '# END GITHUB_ACTIONS_AI_ENV'
+            } >> "$TMP_ENV"
             mv "$TMP_ENV" "$ENV_FILE"
             chmod 600 "$ENV_FILE"
             set -x
