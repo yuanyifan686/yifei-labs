@@ -1,4 +1,4 @@
-import { PROMPT_LIMITS, clipLines, clipText } from "@/lib/ai/promptBudget";
+import { PROMPT_LIMITS, clipLines, clipText, untrustedBlock } from "@/lib/ai/promptBudget";
 import type { SkillGapAnalysisInput } from "@/types/jobMatch";
 import type { CandidateEvidenceScore } from "@/types/resume";
 
@@ -56,10 +56,10 @@ Hard rules:
 
 Target role: ${input.targetRole}
 JD (optional):
-${jd || "N/A"}
+${untrustedBlock("JOB_DESCRIPTION", jd)}
 
 Market demand signals (synthetic, optional):
-${market || "N/A"}
+${untrustedBlock("MARKET_CONTEXT", market)}
 
 Structured resume summary:
 ${options?.structuredSummary || "N/A"}
@@ -70,7 +70,7 @@ Rule evidence seed (refine scores ±15 max; keep grounded evidence; rewrite poor
 ${seed}
 
 Resume:
-${resume}
+${untrustedBlock("RESUME", resume)}
 
 Schema (fill all keys; omit unused optional text fields if empty):
 {

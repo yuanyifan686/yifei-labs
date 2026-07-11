@@ -1,7 +1,70 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import * as THREE from "three";
+
+const resumeScenarios = [
+  {
+    role: "AI 工作流工程师",
+    score: 92,
+    evidence: ["Agent 项目经验", "自动化工作流", "内容生成落地"],
+    skills: [
+      { label: "技能匹配", value: 88 },
+      { label: "项目证据", value: 76 },
+      { label: "市场准备度", value: 64 },
+    ],
+    recommendations: [
+      { role: "AI 工作流工程师", score: 92 },
+      { role: "大模型应用工程师", score: 86 },
+      { role: "AI 产品工程师", score: 78 },
+    ],
+  },
+  {
+    role: "AI 产品经理",
+    score: 89,
+    evidence: ["产品闭环案例", "用户研究", "Prompt 方案"],
+    skills: [
+      { label: "产品判断", value: 86 },
+      { label: "AI 理解", value: 79 },
+      { label: "落地推进", value: 72 },
+    ],
+    recommendations: [
+      { role: "AI 产品经理", score: 89 },
+      { role: "增长产品经理", score: 82 },
+      { role: "Prompt 产品顾问", score: 77 },
+    ],
+  },
+  {
+    role: "数据分析师",
+    score: 84,
+    evidence: ["SQL 分析", "指标体系", "业务洞察"],
+    skills: [
+      { label: "数据建模", value: 81 },
+      { label: "业务理解", value: 74 },
+      { label: "表达呈现", value: 69 },
+    ],
+    recommendations: [
+      { role: "数据分析师", score: 84 },
+      { role: "商业分析师", score: 80 },
+      { role: "AI 数据运营", score: 75 },
+    ],
+  },
+  {
+    role: "内容自动化运营",
+    score: 87,
+    evidence: ["内容生产", "自动化工具", "增长实验"],
+    skills: [
+      { label: "内容策略", value: 83 },
+      { label: "工具搭建", value: 78 },
+      { label: "复盘能力", value: 70 },
+    ],
+    recommendations: [
+      { role: "内容自动化运营", score: 87 },
+      { role: "AI 增长运营", score: 82 },
+      { role: "新媒体策略师", score: 76 },
+    ],
+  },
+];
 
 function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -157,6 +220,28 @@ function makeResumeTexture() {
 
 export function CareerMap3D() {
   const hostRef = useRef<HTMLDivElement | null>(null);
+  const [scenarioIndex, setScenarioIndex] = useState(0);
+  const scenario = resumeScenarios[scenarioIndex];
+  const scoreRingStyle = useMemo(
+    () => ({
+      "--score": `${scenario.score}%`,
+    }) as CSSProperties,
+    [scenario.score],
+  );
+
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+    const initial = window.setTimeout(() => {
+      setScenarioIndex((current) => (current + 1) % resumeScenarios.length);
+    }, 1800);
+    const interval = window.setInterval(() => {
+      setScenarioIndex((current) => (current + 1) % resumeScenarios.length);
+    }, 3800);
+    return () => {
+      window.clearTimeout(initial);
+      window.clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     const mount = hostRef.current;
@@ -625,14 +710,24 @@ export function CareerMap3D() {
         </div>
       </div>
 
-      <div className="resume-hud resume-hud-match">
+      <div className="resume-hud resume-hud-match !bottom-2 !left-0 !right-0 !p-4 lg:!bottom-auto lg:!left-8 lg:!right-4 lg:!top-[18%] lg:!w-auto lg:!p-5">
+        <span className="resume-hud-corner is-tl" />
+        <span className="resume-hud-corner is-tr" />
+        <span className="resume-hud-corner is-bl" />
+        <span className="resume-hud-corner is-br" />
+        <div className="scan-beam" />
+
         <div className="resume-dashboard-head">
           <div>
             <p className="resume-hud-label">岗位匹配仪表盘</p>
-            <strong>AI 工作流工程师</strong>
+            <strong key={scenario.role} className="resume-cycle-text">
+              {scenario.role}
+            </strong>
           </div>
-          <div className="resume-score-ring">
-            <span>92</span>
+          <div className="resume-score-ring" style={scoreRingStyle}>
+            <span key={scenario.score} className="resume-cycle-text">
+              {scenario.score}
+            </span>
             <small>%</small>
           </div>
         </div>
@@ -648,34 +743,36 @@ export function CareerMap3D() {
           <div>
             <p className="resume-hud-title">匹配依据</p>
             <div className="resume-evidence-list">
-              <span>Agent 项目经验</span>
-              <span>自动化工作流</span>
-              <span>内容生成落地</span>
+              {scenario.evidence.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
             </div>
           </div>
           <div>
             <p className="resume-hud-title">能力达标</p>
-            <div className="resume-skill-bars">
-              <span style={{ width: "88%" }} />
-              <span style={{ width: "76%" }} />
-              <span style={{ width: "64%" }} />
+            <div className="resume-skill-labeled">
+              {scenario.skills.map((skill) => (
+                <div key={skill.label}>
+                  <label>
+                    <span>{skill.label}</span>
+                    <span>{skill.value}%</span>
+                  </label>
+                  <div className="bar">
+                    <span style={{ width: `${skill.value}%` }} />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
         <p className="resume-hud-title">Top 3 推荐岗位</p>
-        <div className="resume-role-row">
-          <span>AI 工作流工程师</span>
-          <strong>92%</strong>
-        </div>
-        <div className="resume-role-row">
-          <span>大模型应用工程师</span>
-          <strong>86%</strong>
-        </div>
-        <div className="resume-role-row">
-          <span>AI 产品工程师</span>
-          <strong>78%</strong>
-        </div>
+        {scenario.recommendations.map((item) => (
+          <div className="resume-role-row" key={item.role}>
+            <span>{item.role}</span>
+            <strong>{item.score}%</strong>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { PROMPT_LIMITS, clipText } from "@/lib/ai/promptBudget";
+import { PROMPT_LIMITS, clipText, untrustedBlock } from "@/lib/ai/promptBudget";
 import type { JobMatchInput } from "@/types/jobMatch";
 
 export function buildJobMatchPrompt(input: JobMatchInput) {
@@ -16,10 +16,10 @@ User:
 - Language: ${lang}
 
 Resume:
-${resume}
+${untrustedBlock("RESUME", resume)}
 
 Job list (may include 预筛分 priors — refine, do not invent jobs):
-${jobs}
+${untrustedBlock("JOB_LIST", jobs)}
 
 Rules:
 - JSON object only. No markdown.

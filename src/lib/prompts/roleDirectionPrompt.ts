@@ -1,4 +1,4 @@
-import { PROMPT_LIMITS, clipText } from "@/lib/ai/promptBudget";
+import { PROMPT_LIMITS, clipText, untrustedBlock } from "@/lib/ai/promptBudget";
 import type { RoleDirectionInput } from "@/types/jobMatch";
 
 export function buildRoleDirectionPrompt(input: RoleDirectionInput) {
@@ -18,7 +18,7 @@ User Information:
 - Preferred Location: ${input.preferredLocation || "Not specified"}
 
 Resume:
-${resume}
+${untrustedBlock("RESUME", resume)}
 
 Return strictly valid JSON in this format:
 {

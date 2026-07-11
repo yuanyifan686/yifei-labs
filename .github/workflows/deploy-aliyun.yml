@@ -47,7 +47,7 @@ jobs:
             APP_PORT="${APP_PORT:-3001}"
             PM2_NAME="${PM2_NAME:-yifei_labs}"
             DEPLOY_BRANCH="${DEPLOY_BRANCH:-main}"
-            MINIMAX_BASE_URL="${MINIMAX_BASE_URL:-https://api.minimaxi.com/v1}"
+            MINIMAX_BASE_URL="${MINIMAX_BASE_URL:-https://api.minimax.io/v1}"
             AI_MODEL="${AI_MODEL:-MiniMax-M3}"
 
             if [ -z "${APP_PATH:-}" ]; then

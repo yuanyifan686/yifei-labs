@@ -14,6 +14,7 @@ export function AnalysisStatusCard({
   busy,
   hasJobBankResult,
   hasMarketFitResult,
+  resumeReady = false,
   elapsedMs,
   stageIndex = 0,
   stages,
@@ -27,6 +28,7 @@ export function AnalysisStatusCard({
   busy: boolean;
   hasJobBankResult: boolean;
   hasMarketFitResult: boolean;
+  resumeReady?: boolean;
   elapsedMs: number;
   stageIndex?: number;
   stages?: readonly string[];
@@ -69,10 +71,14 @@ export function AnalysisStatusCard({
                 : mode === "job-bank"
                   ? hasJobBankResult
                     ? "岗位匹配已完成，可导出报告"
-                    : "等待提交简历以启动匹配"
+                    : resumeReady
+                      ? "简历已就绪，可以开始岗位匹配"
+                      : "等待简历输入达到 100 字"
                   : hasMarketFitResult
                     ? "能力诊断已完成，可生成学习计划"
-                    : "可先推荐方向，或粘贴 JD 开始诊断"}
+                    : resumeReady
+                      ? "简历已就绪，可推荐方向或粘贴 JD 开始诊断"
+                      : "等待简历输入达到 100 字"}
             </p>
             {busy ? (
               <div className="analysis-stage mt-3">

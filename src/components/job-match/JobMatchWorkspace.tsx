@@ -497,12 +497,14 @@ export function JobMatchWorkspace() {
           <Button
             variant="command"
             className="h-11 w-full"
+            disabled={!resumeReady}
             onClick={() => {
+              if (!resumeReady) return;
               feedback("click");
               void handleJobBankMatch();
             }}
           >
-            开始岗位匹配
+            {resumeReady ? "开始岗位匹配" : "补足 100 字后开始"}
           </Button>
         );
       }
@@ -579,11 +581,12 @@ export function JobMatchWorkspace() {
     // market-fit mode
     if (!hasMarketFitResult) {
       return (
-        <Button
-          variant="command"
-          className="h-11 w-full"
-          disabled={isSuggestingDirections}
+          <Button
+            variant="command"
+            className="h-11 w-full"
+          disabled={!resumeReady || isSuggestingDirections}
           onClick={() => {
+            if (!resumeReady) return;
             feedback("click");
             if (shouldRecommendDirectionFirst) {
               void handleSuggestDirections();
@@ -593,11 +596,13 @@ export function JobMatchWorkspace() {
           }}
         >
           {isSuggestingDirections ? <LoadingSpinner /> : null}
-          {shouldRecommendDirectionFirst
-            ? "先推荐可投方向"
-            : optionalJd.trim().length >= 40
-              ? "开始真实 JD 诊断"
-              : "开始能力诊断"}
+          {!resumeReady
+            ? "补足 100 字后开始"
+            : shouldRecommendDirectionFirst
+              ? "先推荐可投方向"
+              : optionalJd.trim().length >= 40
+                ? "开始真实 JD 诊断"
+                : "开始能力诊断"}
         </Button>
       );
     }
@@ -806,6 +811,7 @@ export function JobMatchWorkspace() {
               busy={busy}
               hasJobBankResult={hasJobBankResult}
               hasMarketFitResult={hasMarketFitResult}
+              resumeReady={resumeReady}
               elapsedMs={progress.elapsedMs}
               stageIndex={progress.stageIndex}
               stages={progress.stages}

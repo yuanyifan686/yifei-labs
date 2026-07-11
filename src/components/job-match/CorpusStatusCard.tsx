@@ -212,22 +212,48 @@ export function CorpusStatusCard({
   ].filter((t, i, arr) => arr.indexOf(t) === i);
 
   return (
-    <Card className="interactive-card mode-panel p-5">
-      <p className="pro-label">Corpus</p>
-      <h2 className="mt-1 text-base font-semibold text-slate-50">匹配语料与方向</h2>
-      <p className="mt-2 text-xs leading-5 text-slate-400">
-        合成市场样本，非实时在招。可先选定方向再匹配，减少噪声。
-      </p>
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <MetricCard label="样本数" value={jobBankStats?.total ?? 0} animated />
-        <MetricCard
-          label="数据类型"
-          value={<span className="text-sm font-semibold">合成样本</span>}
-          className="from-cyan-500/10"
-        />
-      </div>
+    <Card className="interactive-card mode-panel overflow-hidden p-0">
+      <details className="group" open={selectedDirections.length > 0 || suggestedDirections.length > 0}>
+        <summary className="flex cursor-pointer list-none items-start justify-between gap-3 px-5 py-4">
+          <div className="min-w-0">
+            <p className="pro-label">Corpus</p>
+            <h2 className="mt-1 text-base font-semibold text-slate-50">匹配语料与方向</h2>
+            <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs leading-5 text-slate-400">
+              <span>合成市场样本 · {jobBankStats?.total ?? 0} 条</span>
+              {selectedDirections.length > 0 ? (
+                <span className="rounded-full border border-cyan-400/25 bg-cyan-400/10 px-2 py-0.5 text-[11px] font-medium text-cyan-100">
+                  已选 {selectedDirections.length} 个方向
+                </span>
+              ) : (
+                <span>· 可选方向预筛</span>
+              )}
+            </div>
+            {selectedDirections.length > 0 ? (
+              <p className="mt-1 truncate text-[11px] text-slate-500">
+                {selectedDirections.slice(0, 2).join("、")}
+                {selectedDirections.length > 2 ? ` 等 ${selectedDirections.length} 个` : ""}
+              </p>
+            ) : null}
+          </div>
+          <span className="mt-1 shrink-0 text-xs text-slate-500 transition group-open:rotate-180">
+            ▾
+          </span>
+        </summary>
 
-      <div className="mt-4">
+        <div className="border-t border-white/10 px-5 pb-5 pt-4">
+          <p className="text-xs leading-5 text-slate-400">
+            合成市场样本，非实时在招。可先选定方向再匹配，减少噪声。
+          </p>
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <MetricCard label="样本数" value={jobBankStats?.total ?? 0} animated />
+            <MetricCard
+              label="数据类型"
+              value={<span className="text-sm font-semibold">合成样本</span>}
+              className="from-cyan-500/10"
+            />
+          </div>
+
+          <div className="mt-4">
         <div className="flex items-center justify-between gap-2">
           <p className="text-xs font-semibold text-slate-200">目标方向预筛</p>
           <div className="flex gap-2">
@@ -277,7 +303,9 @@ export function CorpusStatusCard({
             ? `已选 ${selectedDirections.length} 个方向，匹配时优先在相关岗位中排序。`
             : "不选则用简历画像方向弱过滤；仍可全库 TopK。"}
         </p>
+          </div>
       </div>
+      </details>
     </Card>
   );
 }

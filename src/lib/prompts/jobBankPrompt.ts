@@ -1,9 +1,9 @@
-import { PROMPT_LIMITS, clipText } from "@/lib/ai/promptBudget";
+import { PROMPT_LIMITS, clipText, untrustedBlock } from "@/lib/ai/promptBudget";
 import type { GenerateJobBankInput } from "@/types/jobMatch";
 
 export function buildJobBankPrompt(input: GenerateJobBankInput) {
   const count = Math.min(20, Math.max(6, input.count || 12));
-  const resume = clipText(input.resumeContent, 4000);
+  const resume = clipText(input.resumeContent, PROMPT_LIMITS.resume);
   const directionsText =
     input.directions.length > 0
       ? input.directions
@@ -30,10 +30,10 @@ Candidate:
 - Output language: ${input.preferredLanguage}
 
 Resume:
-${resume}
+${untrustedBlock("RESUME", resume)}
 
 Target role directions:
-${directionsText}
+${untrustedBlock("ROLE_DIRECTIONS", directionsText)}
 
 Task:
 Generate ${count} diverse synthetic job postings that a candidate with this profile might find relevant in the Chinese tech job market.

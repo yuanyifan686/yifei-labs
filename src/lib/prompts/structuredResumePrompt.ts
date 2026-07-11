@@ -1,4 +1,4 @@
-import { PROMPT_LIMITS, clipText } from "@/lib/ai/promptBudget";
+import { PROMPT_LIMITS, clipText, untrustedBlock } from "@/lib/ai/promptBudget";
 
 export function buildStructuredResumePrompt(
   resumeContent: string,
@@ -18,7 +18,7 @@ Rules:
 - Free-text language preference: ${lang}.
 
 Resume:
-${resume}
+${untrustedBlock("RESUME", resume)}
 
 Schema:
 {

@@ -1,8 +1,8 @@
-import { PROMPT_LIMITS, clipText } from "@/lib/ai/promptBudget";
+import { PROMPT_LIMITS, clipText, untrustedBlock } from "@/lib/ai/promptBudget";
 import type { LearningPlanInput } from "@/types/jobMatch";
 
 export function buildLearningPlanPrompt(input: LearningPlanInput) {
-  const resume = clipText(input.resumeContent, 3200);
+  const resume = clipText(input.resumeContent, PROMPT_LIMITS.resume);
   return `You are a practical career coach and technical mentor for China tech job seekers.
 
 Task:
@@ -27,7 +27,7 @@ Learning Priorities:
 ${input.learningPriorities.join("\n") || "None listed"}
 
 Resume (for context only):
-${resume}
+${untrustedBlock("RESUME", resume)}
 
 Output Language:
 ${input.preferredLanguage}

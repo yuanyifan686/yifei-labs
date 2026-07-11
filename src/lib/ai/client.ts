@@ -24,7 +24,7 @@ export function getOpenAIClient() {
   const baseURL =
     process.env.MINIMAX_BASE_URL ||
     process.env.OPENAI_BASE_URL ||
-    (process.env.MINIMAX_API_KEY ? "https://api.minimaxi.com/v1" : undefined);
+    (process.env.MINIMAX_API_KEY ? "https://api.minimax.io/v1" : undefined);
 
   if (!apiKey) {
     return null;

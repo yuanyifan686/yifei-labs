@@ -1,0 +1,437 @@
+把当前 Yifei Labs 网站升级为高端 AI-native 职业智能产品界面。参考 Aura 提示词的视觉语言，但不要照搬邮箱客户端内容；必须保留并强化当前网站的业务主题：
+
+- 产品名：Yifei Labs
+- 定位：职业匹配与能力诊断 · Career Intelligence
+- 核心能力：AI 简历评测、目标岗位诊断、岗位库演练匹配、能力差距分析、30 天行动计划、简历优化建议
+- 当前网站：http://8.148.242.219:3001
+- 当前项目栈：Next.js 16 + React 19 + TypeScript + Tailwind CSS 4 + Three.js
+
+目标不是做一个营销模板，而是把现有网站改造成更像「暗色电影级 AI 工作台」的产品首屏和分析入口：深色、玻璃拟态、全屏动态背景、精密仪表盘、扫描舱、macOS/Apple 风味、中文职业智能语境。
+
+## 技术约束
+
+- 使用现有 Next.js App Router 结构，不迁移到 Vite。
+- 优先使用当前依赖：React 19、Next 16、Tailwind 4、Three.js。
+- 不强制引入 motion/react 或 lucide-react；如果需要动画，优先用 CSS keyframes、transition、IntersectionObserver 或现有组件实现。
+- 保留当前可用页面路径与业务入口，不破坏工作台、岗位库、能力诊断、历史记录等现有导航。
+- 不删除现有真实业务文案，只做高级化、结构化、视觉化重写。
+- 所有中文文案保持专业、克制、可信，避免夸张广告腔。
+- 移动端必须可用，首屏按钮不重叠，卡片不溢出，长中文自动换行。
+
+## 总体视觉风格
+
+整体基调：
+
+- 背景：接近 `#07080f` / `#0c0c0c` 的深黑蓝。
+- 主色：cyan / sky / electric blue / violet 小面积点亮。
+- 质感：cinematic、glassy、liquid-glass、AI scanner、career intelligence cockpit。
+- 边框：`border-white/10`、内高光、玻璃反射线。
+- 字体：沿用项目默认 sans；如果项目已有字体配置则沿用，不额外破坏。
+- 避免整站变成单一蓝紫渐变。蓝紫只作为能量线、按钮、分数环和扫描状态，不铺满所有区域。
+
+视觉关键词：
+
+- fullscreen dark cinematic background
+- subtle grid and guide lines
+- AI scanning beam
+- glassmorphism dashboard
+- liquid-glass cards
+- shiny gradient headline
+- macOS-style product chrome
+- precision career intelligence interface
+
+## 全局背景
+
+在 root/page wrapper 中添加固定背景层，位于所有内容后方：
+
+- 深色径向光晕：左上 cyan、右下 violet，透明度低。
+- 细网格线：`linear-gradient` 叠加，opacity 约 0.08。
+- 纵向容器参考线：桌面端在 `max-w-6xl` 两侧显示 `w-px bg-white/10`，移动端隐藏。
+- 噪声层：使用 CSS pseudo-element 或内联 SVG filter，透明度 0.03-0.06。
+- 可保留/增强当前 CareerMap3D 或扫描舱视觉，不要替换成无关邮箱 mockup。
+
+示例背景结构：
+
+```tsx
+<div className="fixed inset-0 -z-10 bg-[#07080f]" />
+<div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(34,211,238,0.18),transparent_32%),radial-gradient(circle_at_80%_30%,rgba(124,58,237,0.16),transparent_30%),linear-gradient(180deg,#07080f_0%,#0b0d16_52%,#06070c_100%)]" />
+<div className="fixed inset-0 -z-10 opacity-[0.08] bg-[linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:96px_96px]" />
+```
+
+## Liquid Glass 工具类
+
+在全局 CSS 增加并复用：
+
+```css
+.liquid-glass {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.035);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.16),
+    0 24px 80px rgba(0,0,0,0.35);
+}
+
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.45) 0%,
+    rgba(255,255,255,0.12) 22%,
+    rgba(255,255,255,0) 48%,
+    rgba(255,255,255,0.10) 78%,
+    rgba(255,255,255,0.32) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.shiny-text {
+  background-image: linear-gradient(
+    to right,
+    #07111f 0%,
+    #0b2551 14%,
+    #a4f4fd 34%,
+    #00d2ff 50%,
+    #7c3aed 68%,
+    #091020 88%,
+    #091020 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: shiny 6s linear infinite;
+}
+
+@keyframes shiny {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+```
+
+## 导航栏
+
+做成 macOS 菜单栏和 AI 产品导航结合的顶部栏：
+
+- 固定或 sticky 顶部，`backdrop-blur-xl bg-black/35 border-b border-white/10`。
+- 左侧：`YL` 方形玻璃 logo + `Yifei Labs` + 小字 `Career Intelligence`。
+- 中间：胶囊导航，保留现有导航：
+  - 首页
+  - 岗位匹配
+  - 能力诊断
+  - 岗位库
+  - 历史记录
+- 右侧：
+  - 次按钮：岗位库
+  - 主按钮：开始分析
+  - 设置/状态小图标按钮可保留，但风格统一为玻璃圆形按钮。
+
+按钮风格：
+
+- 主按钮：白色或 cyan-violet 光泽渐变，不要过度发光。
+- 次按钮：透明玻璃 + `border-white/15`。
+- hover：轻微上浮或亮边，不要大幅变形。
+
+## 首屏 Hero
+
+保留当前首屏业务信息，但改成更高级的视觉表达。
+
+布局：
+
+- 桌面：左侧大标题和行动入口，右侧 AI 职业匹配仪表盘/扫描舱。
+- 移动：标题在上，仪表盘在下，按钮纵向排列。
+- 首屏高度建议 `min-h-[calc(100vh-72px)]`，但底部要露出下一屏的一点内容。
+
+标题：
+
+```text
+AI 简历评测
+智能岗位匹配
+```
+
+其中第二行「智能岗位匹配」或关键词「岗位匹配」使用 `.shiny-text`。
+
+副标题：
+
+```text
+上传简历或粘贴目标岗位，快速获得 AI 评分、匹配排序、能力缺口与下一步行动计划。
+```
+
+小标签：
+
+```text
+AI 驱动 · 精准评估 · 智能匹配
+```
+
+CTA 区域：
+
+- 主按钮：开始分析 / 进入工作台
+- 次按钮：岗位库演练匹配
+- 文字提示：无需登录，粘贴简历即可生成结构化分析
+
+底部玻璃操作条：
+
+- 左侧：`START ANALYSIS`
+- 中间：进入工作台，完成匹配或诊断
+- 右侧三个按钮/状态点：
+  - 诊断目标岗位
+  - 岗位库演练匹配
+  - 浏览合成岗位库
+- 状态点：
+  - 岗位描述优先
+  - 合成样本演练
+  - 可导出报告
+
+## 首屏右侧仪表盘
+
+不要使用 Aura 的邮箱 mockup，改成职业分析 cockpit。
+
+右侧主卡片：
+
+- 标题：`岗位匹配仪表盘`
+- 主岗位：`AI 工作流工程师`
+- 匹配分数：`92%`
+- 环形进度条：cyan-green 渐变
+- 流程标签：
+  - 读取简历
+  - 抽取技能
+  - 匹配岗位
+  - 生成建议
+- 匹配依据 chips：
+  - Agent 项目经验
+  - 自动化工作流
+  - 内容生成落地
+- 能力达标条：
+  - 技能匹配
+  - 项目证据
+  - 市场准备度
+- Top 3 推荐岗位：
+  - AI 工作流工程师 92%
+  - 大模型应用工程师 86%
+  - AI 产品工程师 78%
+
+卡片表现：
+
+- `liquid-glass rounded-2xl`
+- 背后有扫描线/光束穿过
+- 角落可以有小型坐标线、HUD 标尺、微弱发光点
+- 不使用厚重卡片嵌套，内部分区用 border 或透明分割线。
+
+## Career Route 区域
+
+标题：
+
+```text
+从简历到计划，一条分析路径
+```
+
+描述：
+
+```text
+从简历解析、岗位匹配到差距诊断，每一步都沉淀为可执行的求职决策。
+```
+
+四步流程卡片：
+
+1. 简历解析
+   - 提取技能、经验与证据
+2. 岗位匹配
+   - 对照市场样本排序
+3. 差距诊断
+   - 定位缺口与准备度
+4. 行动计划
+   - 学习路径与简历优化
+
+视觉：
+
+- 横向时间线或 4 列玻璃卡片。
+- 每个步骤用 `01/02/03/04` 编号和细箭头连接。
+- 移动端改为单列列表。
+
+## Capabilities 区域
+
+标题：
+
+```text
+三条能力，覆盖求职决策
+```
+
+三张能力卡：
+
+1. 目标岗位诊断
+   - 粘贴招聘页岗位描述，评估准备度、能力缺口与是否值得投。
+2. 岗位库演练
+   - 对照合成市场样本排序，练习方向判断与能力对照（非实时在招）。
+3. 行动与优化
+   - 生成 30 天计划与简历改写建议，把分析结果落到下一步求职准备。
+
+视觉：
+
+- 使用 `liquid-glass rounded-2xl p-6`
+- 卡片顶部显示 `01 ->` 风格。
+- hover 时边框从 `white/10` 变为 `cyan-300/40`。
+- 文字层级清晰，不要把卡片做得太花。
+
+## Analysis Console / 工作台预览区
+
+新增或强化一个类似 Aura inbox mockup 的大型产品 mockup，但内容必须是职业分析工作台。
+
+外层：
+
+- `max-w-6xl mx-auto`
+- `rounded-2xl overflow-hidden border border-white/10 bg-[#0e1014]/90 backdrop-blur-2xl`
+- 顶部 macOS 三色圆点 + 中间标题：`Yifei Labs — Analysis Console`
+
+主体三栏：
+
+左栏：分析入口
+
+- 上传简历
+- 粘贴岗位描述
+- 岗位库匹配
+- 历史报告
+- 学习计划
+
+中栏：候选岗位列表
+
+- AI 工作流工程师 92%
+- 大模型应用工程师 86%
+- AI 产品工程师 78%
+- 数据分析师（AI 增强）74%
+- 内容自动化运营 71%
+
+右栏：结构化报告
+
+- 标题：`AI 工作流工程师`
+- 标签：`高匹配`、`建议优先投递`
+- Summary by Yifei：
+  - 你的项目经历与岗位中的自动化工作流、Agent 编排和内容生成能力高度相关。建议补充 RAG 评测、系统稳定性和交付指标描述。
+- 能力缺口：
+  - RAG 评测
+  - 系统稳定性
+  - 商业指标表达
+- 下一步行动：
+  - 调整项目表述
+  - 补 1 个闭环案例
+  - 生成 30 天学习计划
+
+## How It Works 区域
+
+标题：
+
+```text
+三步完成一次专业分析
+```
+
+三步：
+
+1. 上传或粘贴简历，补充状态与经验信息
+2. 选择岗位匹配，或输入目标岗位做差距诊断
+3. 阅读结构化结果：排序、分数、缺口与行动建议
+
+右侧或下方输出示例：
+
+- 岗位匹配度：88%
+- 市场准备度：72%
+- 优先补齐：RAG 评测 / 系统稳定性
+- 建议动作：调整项目表述 · 补 1 个闭环案例
+
+## Trust / 数据说明区域
+
+不要做虚假的大公司 logo cloud。改为可信说明：
+
+- AI 分析仅作为职业准备参考
+- 岗位库为市场风格样本数据
+- 支持目标岗位 JD 诊断
+- 可导出结构化报告
+- 本地/服务端处理逻辑以项目现有实现为准
+
+可以用小型横向指标展示：
+
+- `92%` 示例匹配峰值
+- `30 天` 行动计划
+- `5 类` 能力证据
+- `3 步` 完成分析
+
+## Final CTA
+
+使用大型液态玻璃 CTA，不要普通卡片堆叠。
+
+标题：
+
+```text
+把求职判断，变成一份可执行计划。
+```
+
+描述：
+
+```text
+从简历、岗位到行动建议，Yifei Labs 帮你看清匹配度、差距和下一步。
+```
+
+按钮：
+
+- 开始分析
+- 浏览岗位库
+
+底部说明：
+
+```text
+岗位库为市场风格样本数据，仅供分析参考，不构成真实招聘邀约。
+```
+
+## 动效规范
+
+- 页面进入：导航轻微下移淡入。
+- Hero 标题：opacity 0 -> 1，translateY 16 -> 0。
+- 仪表盘：opacity 0 -> 1，translateY 24 -> 0，延迟 150ms。
+- 扫描光线：循环 6-8s，低透明度。
+- 分数环：可用 CSS conic-gradient 静态呈现，避免复杂 JS。
+- 卡片 hover：`translateY(-4px)`，边框变亮，背景略亮。
+- 不要大面积弹跳，不要炫技式滚动动画。
+
+## 可访问性与响应式
+
+- 文字与背景对比必须足够。
+- 按钮高度至少 40px。
+- 移动端首屏按钮纵向排列，宽度 100%。
+- 三栏工作台在移动端折叠为纵向卡片。
+- 大标题移动端控制在 `text-4xl` 左右，桌面可到 `text-6xl/text-7xl`。
+- 中文长句要限制 `max-w` 和 `leading`，避免横向溢出。
+
+## 必须保留/强化的当前内容
+
+当前网站已有这些内容，需要保留并高级化：
+
+- `AI 简历评测 智能岗位匹配`
+- `上传简历，快速获得 AI 评分、匹配岗位与提升建议，把下一步求职准备变成可执行路径。`
+- `从简历到计划，一条分析路径`
+- `三条能力，覆盖求职决策`
+- `目标岗位诊断`
+- `岗位库演练`
+- `行动与优化`
+- `三步完成一次专业分析`
+- `开始你的职业分析`
+- `无需登录，粘贴简历即可获得结构化匹配与差距报告。`
+- `岗位库为市场风格样本数据，仅供分析参考，不构成真实招聘邀约。`
+
+## 质量验收
+
+完成后检查：
+
+- 首屏是否一眼能看出这是 Yifei Labs 职业智能/简历岗位匹配产品。
+- 是否明显接近 Aura 参考的暗色、玻璃、电影感、shiny、高端 SaaS 风格。
+- 是否没有出现 Aura、邮箱、Download Aura、pricing plan 等无关内容。
+- 是否没有引入与项目栈冲突的依赖要求。
+- 桌面和移动端是否都没有文字重叠、按钮溢出、卡片挤压。
+- 导航和 CTA 是否仍能进入现有业务流程。

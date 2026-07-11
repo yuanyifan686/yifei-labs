@@ -33,7 +33,7 @@ export function SettingsMenu() {
         aria-label="显示设置"
         aria-expanded={open}
         title="显示设置"
-        className="grid h-9 w-9 place-items-center rounded-lg border border-[var(--yl-border)] text-[var(--yl-text)] transition hover:border-cyan-400/30 hover:bg-[var(--yl-primary-soft)]"
+        className="grid h-9 w-9 place-items-center rounded-full border border-white/15 bg-white/[0.04] text-white transition hover:border-white/25 hover:bg-white/[0.08]"
         onClick={() => setOpen((v) => !v)}
       >
         <span className="text-sm" aria-hidden>

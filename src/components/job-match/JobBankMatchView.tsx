@@ -2,7 +2,6 @@
 
 import { MatchEvidenceBlock } from "@/components/job-match/MatchEvidenceBlock";
 import { RoleDetailPanel } from "@/components/job-match/RoleDetailPanel";
-import { ResultEmptyState } from "@/components/job-match/ResultEmptyState";
 import { ScoreDimensionsBar } from "@/components/job-match/ScoreDimensionsBar";
 import { SkillEvidenceMap } from "@/components/job-match/SkillEvidenceMap";
 import { DetailPanel } from "@/components/job-match/constants";
@@ -214,14 +213,7 @@ export function JobBankMatchView({
           ))}
         </div>
       ) : sortedRoles.length === 0 ? (
-        <ResultEmptyState
-          mode="job-bank"
-          action={onStartAnalysis ? (
-            <Button variant="command" onClick={onStartAnalysis}>
-              开始岗位匹配
-            </Button>
-          ) : undefined}
-        />
+        <JobBankPreviewPanel onStartAnalysis={onStartAnalysis} />
       ) : (
         <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
           <Card className="animate-fade-up overflow-hidden">
@@ -350,5 +342,100 @@ export function JobBankMatchView({
         </div>
       )}
     </>
+  );
+}
+
+function JobBankPreviewPanel({
+  onStartAnalysis,
+}: {
+  onStartAnalysis?: () => void;
+}) {
+  const modules = [
+    {
+      id: "01",
+      title: "推荐岗位 Top 3",
+      desc: "从样本岗位库里筛出最值得优先准备的方向。",
+      preview: ["AI 工作流工程师", "大模型应用工程师", "AI 产品工程师"],
+    },
+    {
+      id: "02",
+      title: "匹配依据",
+      desc: "把简历里的项目、技能和岗位要求做证据对齐。",
+      preview: ["技能命中", "项目证据", "岗位关键词"],
+    },
+    {
+      id: "03",
+      title: "能力缺口",
+      desc: "找出跨岗位反复出现的短板，避免盲目投递。",
+      preview: ["RAG 评测", "系统稳定性", "业务表达"],
+    },
+    {
+      id: "04",
+      title: "下一步行动",
+      desc: "生成诊断、简历优化和 30 天补齐计划。",
+      preview: ["能力诊断", "简历改写", "学习计划"],
+    },
+  ];
+
+  return (
+    <Card className="animate-fade-up interactive-card overflow-hidden p-0">
+      <div className="relative overflow-hidden border-b border-white/10 bg-gradient-to-br from-cyan-500/12 via-white/[0.035] to-violet-500/10 px-5 py-5 sm:px-6">
+        <div className="pointer-events-none absolute -right-10 -top-16 h-44 w-44 rounded-full bg-cyan-400/12 blur-3xl" />
+        <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="min-w-0">
+            <p className="pro-label">Analysis preview</p>
+            <h2 className="mt-1 text-lg font-semibold text-slate-50">
+              等待简历驱动生成结果
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
+              放入简历后，这里会变成岗位排序、匹配证据、能力缺口和行动计划的工作台。
+              未开始前先展示将要生成的结构，方便你知道下一步会发生什么。
+            </p>
+          </div>
+          <Button
+            variant="command"
+            className="shrink-0"
+            disabled={!onStartAnalysis}
+            onClick={onStartAnalysis}
+          >
+            开始岗位匹配
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid gap-0 divide-y divide-white/10 lg:grid-cols-2 lg:divide-x lg:divide-y-0">
+        {modules.map((item) => (
+          <section key={item.id} className="min-h-[180px] p-5 sm:p-6">
+            <div className="flex items-start gap-3">
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-cyan-400/25 bg-cyan-400/10 text-xs font-bold tabular-nums text-cyan-200">
+                {item.id}
+              </span>
+              <div className="min-w-0">
+                <h3 className="text-sm font-semibold text-slate-50">{item.title}</h3>
+                <p className="mt-1 text-xs leading-5 text-slate-400">{item.desc}</p>
+              </div>
+            </div>
+            <div className="mt-5 space-y-2">
+              {item.preview.map((label, index) => (
+                <div
+                  key={label}
+                  className="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.035] px-3 py-2"
+                >
+                  <span className="min-w-0 truncate text-xs font-medium text-slate-300">
+                    {label}
+                  </span>
+                  <span className="h-1.5 w-16 overflow-hidden rounded-full bg-white/10">
+                    <span
+                      className="analysis-preview-fill block h-full rounded-full bg-gradient-to-r from-cyan-300 to-violet-400"
+                      style={{ width: `${86 - index * 14}%` }}
+                    />
+                  </span>
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </Card>
   );
 }

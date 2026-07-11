@@ -1,4 +1,4 @@
-import { PROMPT_LIMITS, clipText } from "@/lib/ai/promptBudget";
+import { PROMPT_LIMITS, clipText, untrustedBlock } from "@/lib/ai/promptBudget";
 import type { ResumeOptimizationInput } from "@/types/jobMatch";
 
 export function buildResumeOptimizePrompt(input: ResumeOptimizationInput) {
@@ -25,10 +25,10 @@ Suggested Resume Keywords:
 ${input.selectedRole.suggestedResumeKeywords.join(", ")}
 
 Optional Job Description:
-${jd || "No specific job description provided. Optimize based on the selected role direction."}
+${untrustedBlock("JOB_DESCRIPTION", jd || "No specific job description provided. Optimize based on the selected role direction.")}
 
 Original Resume:
-${resume}
+${untrustedBlock("RESUME", resume)}
 
 Output Language:
 ${input.preferredLanguage}

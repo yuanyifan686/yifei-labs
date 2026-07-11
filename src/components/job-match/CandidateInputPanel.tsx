@@ -54,16 +54,25 @@ export function CandidateInputPanel({
             服务用于分析；会话默认保存结构化结果与摘要，不在历史中公开完整原文。
           </p>
         </div>
-        <button
-          type="button"
-          className="shrink-0 rounded-md border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 text-xs font-medium text-cyan-200 transition hover:border-cyan-400/35 hover:bg-cyan-400/15"
-          onClick={onFillSample}
-        >
-          填入示例
-        </button>
       </div>
 
       <div className="mt-5 space-y-4">
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            className="rounded-lg border border-cyan-400/20 bg-cyan-400/10 px-3 py-2 text-xs font-semibold text-cyan-100 transition hover:border-cyan-400/35 hover:bg-cyan-400/15"
+            onClick={onFillSample}
+          >
+            填入示例
+          </button>
+          <FileUpload
+            label={isParsingFile ? "解析中" : "上传 PDF/DOCX"}
+            loading={isParsingFile}
+            className="grid min-h-9 place-items-center rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-center text-xs font-semibold text-slate-200 transition hover:border-white/20 hover:bg-white/[0.07] hover:text-slate-50"
+            onFileChange={onFileUpload}
+          />
+        </div>
+
         <Field label="简历正文 *">
           <Textarea
             className={cn(
@@ -88,11 +97,9 @@ export function CandidateInputPanel({
               >
                 {resumeLength} / {MIN_RESUME_CHARS} 字
               </span>
-              <FileUpload
-                label={isParsingFile ? "解析中" : "上传 PDF/DOCX"}
-                loading={isParsingFile}
-                onFileChange={onFileUpload}
-              />
+              <span className="text-slate-500">
+                {resumeReady ? "可以开始分析" : "补足后解锁匹配"}
+              </span>
             </div>
             <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
               <div
@@ -117,21 +124,31 @@ export function CandidateInputPanel({
         </Field>
 
         {onPersistHistoryChange ? (
-          <label className="flex cursor-pointer items-start gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5">
-            <input
-              type="checkbox"
-              className="mt-0.5"
-              checked={!persistHistory}
-              onChange={(e) => onPersistHistoryChange(!e.target.checked)}
-              data-testid="opt-out-history"
-            />
-            <span className="text-xs leading-5 text-slate-300">
-              <span className="font-medium text-slate-100">本次不保存历史</span>
-              <span className="mt-0.5 block text-slate-500">
-                关闭后会话仅进程内临时保留，不写入云端/历史列表（仍会发送给 AI 做分析）。
+          <details className="group rounded-xl border border-white/10 bg-white/[0.03]">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-3 text-sm font-medium text-slate-200">
+              <span>隐私与历史</span>
+              <span className="text-xs text-slate-500 transition group-open:rotate-180">
+                ▾
               </span>
-            </span>
-          </label>
+            </summary>
+            <div className="border-t border-white/10 px-3 py-3">
+              <label className="flex cursor-pointer items-start gap-2.5">
+                <input
+                  type="checkbox"
+                  className="mt-0.5"
+                  checked={!persistHistory}
+                  onChange={(e) => onPersistHistoryChange(!e.target.checked)}
+                  data-testid="opt-out-history"
+                />
+                <span className="text-xs leading-5 text-slate-300">
+                  <span className="font-medium text-slate-100">本次不保存历史</span>
+                  <span className="mt-0.5 block text-slate-500">
+                    关闭后会话仅进程内临时保留，不写入云端/历史列表（仍会发送给 AI 做分析）。
+                  </span>
+                </span>
+              </label>
+            </div>
+          </details>
         ) : null}
 
         <details className="group rounded-xl border border-white/10 bg-white/[0.03]">
