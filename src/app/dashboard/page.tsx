@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Card } from "@/components/ui/Card";
+import { HardLink } from "@/components/ui/HardLink";
 
 const apps = [
   {
@@ -113,9 +113,9 @@ export default function DashboardPage() {
               </Card>
             );
             return available ? (
-              <Link key={app.title} href={app.href}>
+              <HardLink key={app.title} href={app.href}>
                 {content}
-              </Link>
+              </HardLink>
             ) : (
               <div key={app.title}>{content}</div>
             );

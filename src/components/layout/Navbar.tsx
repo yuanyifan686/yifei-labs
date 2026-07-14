@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import type { ReactNode } from "react";
 import { Suspense, useState } from "react";
 import { SettingsMenu } from "@/components/layout/SettingsMenu";
 import { CTA_LINKS, isNavItemActive, NAV_ITEMS } from "@/lib/navigation";
@@ -10,6 +10,30 @@ function navLinkClass(active: boolean) {
   return active
     ? "bg-white/[0.08] text-white shadow-[0_0_12px_rgba(56,189,248,0.12)]"
     : "text-slate-400 hover:bg-white/[0.05] hover:text-white";
+}
+
+function HardNavLink({
+  href,
+  className,
+  children,
+  onClick,
+}: {
+  href: string;
+  className?: string;
+  children: ReactNode;
+  onClick?: () => void;
+}) {
+  return (
+    <a
+      href={href}
+      className={className}
+      onClick={() => {
+        onClick?.();
+      }}
+    >
+      {children}
+    </a>
+  );
 }
 
 function NavbarInner() {
@@ -21,7 +45,7 @@ function NavbarInner() {
   return (
     <header className="sticky top-0 z-40 animate-fade-in border-b border-white/10 bg-black/35 pt-[env(safe-area-inset-top,0px)] shadow-lg shadow-black/20 backdrop-blur-xl">
       <nav className="mx-auto flex h-14 max-w-6xl min-w-0 items-center justify-between gap-2 px-4 sm:h-16 sm:px-6">
-        <Link
+        <HardNavLink
           href="/"
           className="group flex min-w-0 items-center gap-2.5"
           onClick={() => setOpen(false)}
@@ -37,36 +61,36 @@ function NavbarInner() {
               Career Intelligence
             </span>
           </span>
-        </Link>
+        </HardNavLink>
 
         <div className="hidden items-center gap-0.5 rounded-full border border-white/10 bg-white/[0.04] p-1 text-sm font-medium backdrop-blur-md md:flex">
           {NAV_ITEMS.map((item) => {
             const active = isNavItemActive(item.href, pathname, mode);
             return (
-              <Link
+              <HardNavLink
                 className={`rounded-full px-3 py-1.5 transition-all duration-200 ${navLinkClass(active)}`}
                 href={item.href}
                 key={item.label}
               >
                 {item.label}
-              </Link>
+              </HardNavLink>
             );
           })}
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
-          <Link
+          <HardNavLink
             href={CTA_LINKS.jobBank}
             className="hidden min-h-10 items-center rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/[0.07] lg:inline-flex"
           >
             岗位库
-          </Link>
-          <Link
+          </HardNavLink>
+          <HardNavLink
             href={CTA_LINKS.startAnalysis}
             className="hidden min-h-10 items-center rounded-full border border-white/10 bg-gradient-to-r from-sky-400 via-cyan-400 to-violet-500 px-3.5 py-1.5 text-sm font-medium text-slate-950 shadow-md shadow-cyan-500/15 transition hover:-translate-y-0.5 hover:from-sky-300 hover:to-violet-400 active:scale-[0.98] sm:inline-flex"
           >
             开始分析
-          </Link>
+          </HardNavLink>
           <SettingsMenu />
           <button
             type="button"
@@ -96,23 +120,23 @@ function NavbarInner() {
             {NAV_ITEMS.map((item) => {
               const active = isNavItemActive(item.href, pathname, mode);
               return (
-                <Link
+                <HardNavLink
                   key={item.label}
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className={`rounded-xl px-3 py-2.5 text-sm font-medium transition ${navLinkClass(active)}`}
                 >
                   {item.label}
-                </Link>
+                </HardNavLink>
               );
             })}
-            <Link
+            <HardNavLink
               href={CTA_LINKS.startAnalysis}
               onClick={() => setOpen(false)}
               className="mt-2 min-h-10 rounded-xl bg-gradient-to-r from-sky-400 via-cyan-400 to-violet-500 px-3 py-2.5 text-center text-sm font-medium text-slate-950"
             >
               开始分析
-            </Link>
+            </HardNavLink>
           </div>
         </div>
       ) : null}

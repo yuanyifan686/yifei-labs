@@ -570,7 +570,7 @@ export function JobMatchWorkspace() {
           className="h-11 w-full"
           onClick={() => {
             feedback("click");
-            router.push("/apps/job-match/history");
+            window.location.assign("/apps/job-match/history");
           }}
         >
           查看历史会话 / 导出报告

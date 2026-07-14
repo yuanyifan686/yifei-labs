@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import {
   deleteMyAnalysisSessionAction,
@@ -9,6 +8,7 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { HardLink } from "@/components/ui/HardLink";
 import { getOrCreateClientToken } from "@/lib/session/clientIdentity";
 import { formatDate, matchTone } from "@/lib/utils";
 import { AnalysisSession } from "@/types/jobMatch";
@@ -67,18 +67,18 @@ export function HistoryArchiveClient() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3 text-sm font-medium">
-            <Link
+            <HardLink
               className="text-slate-200 transition hover:text-slate-50"
               href="/apps/job-match?mode=job-bank"
             >
               岗位匹配
-            </Link>
-            <Link
+            </HardLink>
+            <HardLink
               className="text-slate-200 transition hover:text-slate-50"
               href="/apps/job-match?mode=market-fit"
             >
               能力诊断
-            </Link>
+            </HardLink>
           </div>
         </div>
 
@@ -106,12 +106,12 @@ export function HistoryArchiveClient() {
                 完成一次岗位匹配后，会话会出现在这里。不会展示其他浏览器的记录。
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-2">
-                <Link
+                <HardLink
                   href="/apps/job-match?mode=job-bank"
                   className="inline-flex rounded-lg bg-gradient-to-r from-sky-500 to-violet-600 px-4 py-2 text-sm font-medium text-white shadow-sm"
                 >
                   开始岗位匹配
-                </Link>
+                </HardLink>
               </div>
             </Card>
           ) : (
@@ -154,12 +154,12 @@ export function HistoryArchiveClient() {
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      <Link
+                      <HardLink
                         className="inline-flex rounded-md bg-gradient-to-r from-sky-500 to-violet-600 px-4 py-2 text-sm font-medium text-white"
                         href={`/apps/job-match/history/${session.id}`}
                       >
                         查看详情
-                      </Link>
+                      </HardLink>
                       <Button
                         type="button"
                         variant="ghost"

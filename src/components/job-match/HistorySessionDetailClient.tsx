@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { getMyAnalysisSessionAction } from "@/app/apps/job-match/actions";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import { HardLink } from "@/components/ui/HardLink";
 import { getOrCreateClientToken } from "@/lib/session/clientIdentity";
 import { formatDate, matchTone } from "@/lib/utils";
 import { AnalysisSession } from "@/types/jobMatch";
@@ -40,12 +40,12 @@ export function HistorySessionDetailClient({ sessionId }: { sessionId: string })
   if (error || !session) {
     return (
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <Link
+        <HardLink
           className="text-sm font-medium text-slate-300 hover:text-slate-50"
           href="/apps/job-match/history"
         >
           ← 返回历史
-        </Link>
+        </HardLink>
         <Card className="mt-6 border-red-400/20 bg-red-400/5 p-6 text-sm text-red-100">
           {error || "会话不存在"}
         </Card>
@@ -60,12 +60,12 @@ export function HistorySessionDetailClient({ sessionId }: { sessionId: string })
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <Link
+      <HardLink
         className="text-sm font-medium text-slate-300 hover:text-slate-50"
         href="/apps/job-match/history"
       >
         ← 返回历史
-      </Link>
+      </HardLink>
 
       <div className="mt-5">
         <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">

@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { HardLink } from "@/components/ui/HardLink";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
@@ -109,12 +109,12 @@ export function JobBankBrowser({ jobs }: Props) {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Link href="/apps/job-match?mode=market-fit">
+            <HardLink href="/apps/job-match?mode=market-fit">
               <Button variant="secondary">能力诊断</Button>
-            </Link>
-            <Link href="/apps/job-match?mode=job-bank">
+            </HardLink>
+            <HardLink href="/apps/job-match?mode=job-bank">
               <Button variant="command">岗位匹配</Button>
-            </Link>
+            </HardLink>
           </div>
         </div>
 
@@ -335,12 +335,12 @@ function JobCard({ job, index }: { job: StoredJob; index: number }) {
           ) : null}
         </div>
         <div className="flex shrink-0 flex-col gap-2 lg:w-40">
-          <Link
+          <HardLink
             href={`/apps/job-match?mode=market-fit&role=${encodeURIComponent(job.title)}`}
             className="inline-flex h-10 items-center justify-center rounded-lg bg-gradient-to-r from-sky-500 to-violet-600 px-3 text-sm font-medium text-white shadow-sm transition hover:bg-slate-200 hover:shadow-md active:scale-[0.98]"
           >
             能力诊断 →
-          </Link>
+          </HardLink>
           <p className="text-center text-[11px] text-slate-500 lg:text-right">
             {formatDate(job.createdAt)}
           </p>

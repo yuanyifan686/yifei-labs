@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { AnalysisConsolePreview } from "@/components/home/AnalysisConsolePreview";
 import { CareerMap3D } from "@/components/home/CareerMap3D";
 import { Button } from "@/components/ui/Button";
+import { HardLink } from "@/components/ui/HardLink";
 
 const capabilities = [
   {
@@ -90,17 +90,17 @@ export default function Home() {
                 variant="command"
                 className="hero-primary-btn min-h-11 w-full rounded-full px-6 sm:w-auto"
               >
-                <Link href="/apps/job-match?mode=job-bank">
+                <HardLink href="/apps/job-match?mode=job-bank">
                   开始分析
                   <span aria-hidden>→</span>
-                </Link>
+                </HardLink>
               </Button>
               <Button
                 asChild
                 variant="secondary"
                 className="min-h-11 w-full rounded-full border-white/15 bg-white/[0.05] text-white backdrop-blur-xl hover:border-white/25 sm:w-auto"
               >
-                <Link href="/apps/job-match?mode=job-bank">岗位库演练匹配</Link>
+                <HardLink href="/apps/job-match?mode=job-bank">岗位库演练匹配</HardLink>
               </Button>
             </div>
 
@@ -131,24 +131,24 @@ export default function Home() {
                 asChild
                 className="hero-primary-btn w-full min-h-10 rounded-full border border-white/10 bg-gradient-to-r from-sky-400 via-cyan-400 to-violet-500 text-slate-950 shadow-xl shadow-cyan-500/20 hover:from-sky-300 hover:to-violet-400 sm:w-auto"
               >
-                <Link href="/apps/job-match?mode=market-fit">
+                <HardLink href="/apps/job-match?mode=market-fit">
                   诊断目标岗位
                   <span aria-hidden>→</span>
-                </Link>
+                </HardLink>
               </Button>
               <Button
                 asChild
                 variant="secondary"
                 className="w-full min-h-10 rounded-full border-white/15 bg-white/[0.06] text-white backdrop-blur-xl hover:border-white/25 hover:bg-white/[0.08] sm:w-auto"
               >
-                <Link href="/apps/job-match?mode=job-bank">岗位库演练匹配</Link>
+                <HardLink href="/apps/job-match?mode=job-bank">岗位库演练匹配</HardLink>
               </Button>
               <Button
                 asChild
                 variant="secondary"
                 className="hidden min-h-10 rounded-full border-white/15 bg-white/[0.04] text-white backdrop-blur-xl hover:border-white/25 hover:bg-white/[0.06] sm:inline-flex"
               >
-                <Link href="/apps/job-match/job-bank">浏览合成岗位库</Link>
+                <HardLink href="/apps/job-match/job-bank">浏览合成岗位库</HardLink>
               </Button>
             </div>
             <div className="hero-command-meta">
@@ -214,7 +214,7 @@ export default function Home() {
           </div>
           <div className="grid gap-4 md:grid-cols-3">
             {capabilities.map((item, index) => (
-              <Link key={item.title} href={item.href} className="group block">
+              <HardLink key={item.title} href={item.href} className="group block">
                 <div
                   className={`liquid-glass interactive-card h-full rounded-2xl p-6 animate-fade-up stagger-${index + 1}`}
                 >
@@ -228,7 +228,7 @@ export default function Home() {
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-slate-400">{item.desc}</p>
                 </div>
-              </Link>
+              </HardLink>
             ))}
           </div>
         </div>
@@ -371,17 +371,17 @@ export default function Home() {
             </p>
             <div className="mt-6 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button asChild variant="command" className="min-h-11 w-full rounded-full sm:w-auto">
-                <Link href="/apps/job-match?mode=job-bank">
+                <HardLink href="/apps/job-match?mode=job-bank">
                   开始分析
                   <span aria-hidden>→</span>
-                </Link>
+                </HardLink>
               </Button>
               <Button
                 asChild
                 variant="secondary"
                 className="min-h-11 w-full rounded-full border-white/15 bg-white/[0.05] text-white sm:w-auto"
               >
-                <Link href="/apps/job-match/job-bank">浏览岗位库</Link>
+                <HardLink href="/apps/job-match/job-bank">浏览岗位库</HardLink>
               </Button>
             </div>
             <p className="mt-5 max-w-xl text-xs leading-5 text-slate-500">

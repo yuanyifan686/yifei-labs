@@ -1641,3 +1641,16 @@
   └─ ƒ getAnalysisLoadAction({"isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
  POST /apps/job-match?mode=job-bank 200 in 31ms (next.js: 12ms, application-code: 18ms)
   └─ ƒ getAnalysisLoadAction({"clientToken":"7fea1943-30db-4688-bcf9-6a075c602c29","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ GET / 200 in 138ms (next.js: 5ms, application-code: 133ms)
+ GET /apps/job-match?mode=job-bank 200 in 84ms (next.js: 9ms, application-code: 75ms)
+ POST /apps/job-match?mode=job-bank 200 in 29ms (next.js: 7ms, application-code: 21ms)
+  └─ ƒ getJobBankStatsAction() in 3ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 23ms (next.js: 8ms, application-code: 16ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"04dc2f40-2f8d-43ab-ac83-a51e70fe2b99","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 26ms (next.js: 9ms, application-code: 16ms)
+  └─ ƒ getJobBankStatsAction() in 4ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 24ms (next.js: 7ms, application-code: 17ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"04dc2f40-2f8d-43ab-ac83-a51e70fe2b99","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ POST /apps/job-match?mode=job-bank 200 in 20ms (next.js: 6ms, application-code: 14ms)
+  └─ ƒ getAnalysisLoadAction({"clientToken":"04dc2f40-2f8d-43ab-ac83-a51e70fe2b99","isBusyUi":false}) in 0ms src/app/apps/job-match/actions.ts
+ GET / 200 in 98ms (next.js: 7ms, application-code: 91ms)
