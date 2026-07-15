@@ -12,6 +12,7 @@
     "test:e2e": "playwright test",
     "smoke": "node scripts/smoke-offline.mjs",
     "smoke:ai": "node scripts/smoke-core.mjs",
+    "check:minimax": "node scripts/check-minimax.mjs",
     "golden": "node scripts/golden-set.mjs",
     "seed:jobs": "node scripts/seed-job-bank.mjs",
     "seed:jobs:grok": "node scripts/seed-job-bank-grok.mjs",
