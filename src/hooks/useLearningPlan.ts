@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { runLearningPlanAction } from "@/app/apps/job-match/actions";
 import { ActionErrorCode } from "@/lib/actionState";
+import { compactResumeForAnalysis } from "@/lib/resume/compactResume";
 import {
   LearningPlanResult,
   PreferredLanguage,
@@ -46,8 +47,9 @@ export function useLearningPlan() {
 
     setIsLearningPlan(true);
     try {
+      const resume = compactResumeForAnalysis(options.resumeContent);
       const response = await runLearningPlanAction({
-        resumeContent: options.resumeContent,
+        resumeContent: resume.content,
         targetRole: options.gapResult.targetRole,
         preferredLanguage: options.preferredLanguage,
         readinessScore: options.gapResult.readinessScore,
@@ -66,7 +68,9 @@ export function useLearningPlan() {
       setLearningPlan(response.data);
       return {
         ok: true,
-        warning: response.warning,
+        warning: [response.warning, resume.compacted ? `简历较长，已压缩为 ${resume.content.length} 字用于稳定分析。` : undefined]
+          .filter(Boolean)
+          .join(" ") || undefined,
         sessionId: response.data.sessionId,
       };
     } catch {

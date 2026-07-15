@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { runResumeOptimizationAction } from "@/app/apps/job-match/actions";
 import { ActionErrorCode } from "@/lib/actionState";
+import { compactResumeForAnalysis } from "@/lib/resume/compactResume";
 import {
   JobMatch,
   PreferredLanguage,
@@ -36,8 +37,9 @@ export function useResumeOptimization() {
 
     setIsOptimizing(true);
     try {
+      const resume = compactResumeForAnalysis(options.originalResume);
       const response = await runResumeOptimizationAction({
-        originalResume: options.originalResume,
+        originalResume: resume.content,
         selectedRole: options.role,
         preferredLanguage: options.preferredLanguage,
         optionalJobDescription: options.role.sourceText || "",
@@ -51,7 +53,9 @@ export function useResumeOptimization() {
       setOptimizationResult(response.data);
       return {
         ok: true,
-        warning: response.warning,
+        warning: [response.warning, resume.compacted ? `简历较长，已压缩为 ${resume.content.length} 字用于稳定优化。` : undefined]
+          .filter(Boolean)
+          .join(" ") || undefined,
         sessionId: response.data.sessionId,
       };
     } catch {

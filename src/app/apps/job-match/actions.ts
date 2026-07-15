@@ -27,6 +27,7 @@ import {
   recommendRoleDirections,
 } from "@/lib/ai";
 import { parseStructuredResume } from "@/lib/resume/parseStructuredResume";
+import { compactResumeForAnalysis } from "@/lib/resume/compactResume";
 import { toResumeProfile } from "@/lib/resume/toResumeProfile";
 import { extractResumeTextFromFile } from "@/lib/parseResume";
 import {
@@ -88,6 +89,16 @@ function persistenceWarning(persistHistory?: boolean): string | undefined {
 
 function writePersist(persistHistory?: boolean) {
   return persistHistory === false ? false : true;
+}
+
+function compactInputResume<T extends { resumeContent: string }>(input: T): T {
+  const resume = compactResumeForAnalysis(input.resumeContent);
+  return resume.compacted ? { ...input, resumeContent: resume.content } : input;
+}
+
+function compactOriginalResume<T extends { originalResume: string }>(input: T): T {
+  const resume = compactResumeForAnalysis(input.originalResume);
+  return resume.compacted ? { ...input, originalResume: resume.content } : input;
 }
 
 function validateResumeOnlyInput(
@@ -168,9 +179,10 @@ export async function runJobMatchAction(
     return await withAnalysisSlot(
       "job-match",
       async () => {
+        const safeInput = compactInputResume(input);
         const normalizedInput = {
-          ...input,
-          fullName: input.fullName.trim() || "匿名用户",
+          ...safeInput,
+          fullName: safeInput.fullName.trim() || "匿名用户",
         };
         const outcome = await analyzeJobMatch(normalizedInput);
         const warnings = [outcome.warning, persistenceWarning()].filter(Boolean);
@@ -348,6 +360,7 @@ async function runMatchAgainstJobBankCore(
   >
 > {
   try {
+    const safeInput = compactInputResume(input);
     let stats = await getJobBankStats();
     const warnings: string[] = [];
     /** Session-only synthetic jobs — never replace the shared bank. */
@@ -361,8 +374,8 @@ async function runMatchAgainstJobBankCore(
         experienceLevel: input.experienceLevel,
         preferredLanguage: input.preferredLanguage,
         preferredLocation: input.preferredLocation,
-        resumeContent: input.resumeContent,
-        directions: input.directions || [],
+        resumeContent: safeInput.resumeContent,
+        directions: safeInput.directions || [],
         count: 12,
         mode: "append",
       });
@@ -374,13 +387,13 @@ async function runMatchAgainstJobBankCore(
       );
     } else if (input.regenerate) {
       const generated = await generateJobBank({
-        fullName: input.fullName,
-        currentStatus: input.currentStatus,
-        experienceLevel: input.experienceLevel,
-        preferredLanguage: input.preferredLanguage,
-        preferredLocation: input.preferredLocation,
-        resumeContent: input.resumeContent,
-        directions: input.directions || [],
+        fullName: safeInput.fullName,
+        currentStatus: safeInput.currentStatus,
+        experienceLevel: safeInput.experienceLevel,
+        preferredLanguage: safeInput.preferredLanguage,
+        preferredLocation: safeInput.preferredLocation,
+        resumeContent: safeInput.resumeContent,
+        directions: safeInput.directions || [],
         count: 12,
         mode: "append",
       });
@@ -392,14 +405,14 @@ async function runMatchAgainstJobBankCore(
     }
 
     // Stage 1: structured resume → ResumeProfile for retrieval
-    const structured = await parseStructuredResume(input.resumeContent, {
-      preferredLanguage: input.preferredLanguage,
-      preferredLocation: input.preferredLocation,
+    const structured = await parseStructuredResume(safeInput.resumeContent, {
+      preferredLanguage: safeInput.preferredLanguage,
+      preferredLocation: safeInput.preferredLocation,
     });
     const profile = toResumeProfile(structured);
 
     // Explicit directions from UI, else weak filter via profile domains
-    const explicitDirections = (input.directions || [])
+    const explicitDirections = (safeInput.directions || [])
       .map((d) => d.title.trim())
       .filter(Boolean);
     const weakDirections = profile.domains.slice(0, 4);
@@ -429,8 +442,8 @@ async function runMatchAgainstJobBankCore(
     const topK = input.topK ?? 12;
     const candidates = retrieveCandidates(profile, allJobs, {
       limit: topK,
-      experienceLevel: input.experienceLevel,
-      preferredLocation: input.preferredLocation,
+      experienceLevel: safeInput.experienceLevel,
+      preferredLocation: safeInput.preferredLocation,
       directionTitles: filterTitles,
     });
 
@@ -451,12 +464,12 @@ async function runMatchAgainstJobBankCore(
     };
 
     const matchInput: JobMatchInput = {
-      fullName: input.fullName.trim() || "匿名用户",
-      currentStatus: input.currentStatus,
-      experienceLevel: input.experienceLevel,
-      preferredLanguage: input.preferredLanguage,
-      preferredLocation: input.preferredLocation,
-      resumeContent: input.resumeContent,
+      fullName: safeInput.fullName.trim() || "匿名用户",
+      currentStatus: safeInput.currentStatus,
+      experienceLevel: safeInput.experienceLevel,
+      preferredLanguage: safeInput.preferredLanguage,
+      preferredLocation: safeInput.preferredLocation,
+      resumeContent: safeInput.resumeContent,
       jobListContent,
     };
 
@@ -471,8 +484,8 @@ async function runMatchAgainstJobBankCore(
         { ...pipeline, rankedCount: candidates.length },
         outcome.warning?.includes("未配置") ? "missing_key" : "api_error",
         {
-          experienceLevel: input.experienceLevel,
-          preferredLocation: input.preferredLocation,
+          experienceLevel: safeInput.experienceLevel,
+          preferredLocation: safeInput.preferredLocation,
         },
       );
     } else {
@@ -482,9 +495,9 @@ async function runMatchAgainstJobBankCore(
         candidates,
         { ...pipeline, rankedCount: outcome.data.recommendedRoles?.length || 0 },
         {
-          experienceLevel: input.experienceLevel,
-          preferredLocation: input.preferredLocation,
-          language: input.preferredLanguage,
+          experienceLevel: safeInput.experienceLevel,
+          preferredLocation: safeInput.preferredLocation,
+          language: safeInput.preferredLanguage,
         },
       );
     }
@@ -494,15 +507,15 @@ async function runMatchAgainstJobBankCore(
     matchResult.profile = profile;
 
     const session = await attachMatchToSession(
-      input.sessionId,
+      safeInput.sessionId,
       profile,
       matchResult,
       stats.updatedAt || new Date().toISOString(),
       outcome.source === "ai" ? "ai" : "fallback",
       {
-        clientToken: input.clientToken,
-        resumeTextHash: hashResumeText(input.resumeContent),
-        persist: writePersist(input.persistHistory),
+        clientToken: safeInput.clientToken,
+        resumeTextHash: hashResumeText(safeInput.resumeContent),
+        persist: writePersist(safeInput.persistHistory),
         structuredResume: structured,
       },
     );
@@ -517,7 +530,7 @@ async function runMatchAgainstJobBankCore(
             : "未启用方向过滤（全库 TopK）。") +
         " 岗位库为合成市场样本，非实时在招。",
     );
-    const persistNote = persistenceWarning(input.persistHistory);
+    const persistNote = persistenceWarning(safeInput.persistHistory);
     if (persistNote) warnings.push(persistNote);
 
     return {
@@ -559,16 +572,17 @@ export async function runSkillGapAnalysisAction(
     return await withAnalysisSlot(
       "skill-gap",
       async () => {
+        const safeInput = compactInputResume(input);
         const relatedJobs = (
-          await findRelatedMarketJobs(input.targetRole, 6)
+          await findRelatedMarketJobs(safeInput.targetRole, 6)
         ).map(hydrateStoredJob);
         const marketJobContext =
-          input.marketJobContext ||
+          safeInput.marketJobContext ||
           jobsToMarketContext(relatedJobs) ||
           undefined;
 
         const outcome = await analyzeSkillGap({
-          ...input,
+          ...safeInput,
           marketJobContext,
         });
 
@@ -577,9 +591,9 @@ export async function runSkillGapAnalysisAction(
           marketJobsUsed: relatedJobs.length,
         };
 
-        const session = await attachGapToSession(input.sessionId, data, {
-          clientToken: input.clientToken,
-          persist: writePersist(input.persistHistory),
+        const session = await attachGapToSession(safeInput.sessionId, data, {
+          clientToken: safeInput.clientToken,
+          persist: writePersist(safeInput.persistHistory),
         });
 
         const warnings = [
@@ -587,7 +601,7 @@ export async function runSkillGapAnalysisAction(
             (relatedJobs.length > 0
               ? `已结合岗位库中 ${relatedJobs.length} 条相关市场需求岗位进行分析（合成市场样本，非实时在招）。`
               : "岗位库中相关样本较少，已按目标岗位名称做通用市场分析。"),
-          persistenceWarning(input.persistHistory),
+          persistenceWarning(safeInput.persistHistory),
         ].filter(Boolean);
 
         return {
@@ -618,9 +632,10 @@ export async function runResumeOptimizationAction(
   }
 
   try {
-    const outcome = await optimizeResumeForRole(input);
+    const safeInput = compactOriginalResume(input);
+    const outcome = await optimizeResumeForRole(safeInput);
     // Optional legacy table write (does not store full resume in session)
-    const optimizationId = await saveResumeOptimization(input, outcome.data);
+    const optimizationId = await saveResumeOptimization(safeInput, outcome.data);
     const session = await attachOptimizationToSession(
       input.sessionId,
       outcome.data,
@@ -682,7 +697,8 @@ export async function runLearningPlanAction(
   }
 
   try {
-    const outcome = await generateLearningPlan(input);
+    const safeInput = compactInputResume(input);
+    const outcome = await generateLearningPlan(safeInput);
     const session = await attachLearningPlanToSession(
       input.sessionId,
       outcome.data,

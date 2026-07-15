@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { runSkillGapAnalysisAction } from "@/app/apps/job-match/actions";
 import { ActionErrorCode } from "@/lib/actionState";
+import { compactResumeForAnalysis } from "@/lib/resume/compactResume";
 import { JobMatchInput, PreferredLanguage, SkillGapAnalysisResult } from "@/types/jobMatch";
 import type { ProofLinkInput } from "@/types/resume";
 
@@ -66,8 +67,9 @@ export function useMarketFitAnalysis() {
     setAnalysisSource(null);
 
     try {
+      const resume = compactResumeForAnalysis(options.resumeContent);
       const response = await runSkillGapAnalysisAction({
-        resumeContent: options.resumeContent,
+        resumeContent: resume.content,
         targetRole: options.targetRole.trim(),
         targetJobDescription: options.optionalJd?.trim() || undefined,
         preferredLanguage: options.preferredLanguage,
@@ -87,7 +89,9 @@ export function useMarketFitAnalysis() {
       if (response.data.sessionId) setSessionId(response.data.sessionId);
       return {
         ok: true,
-        warning: response.warning,
+        warning: [response.warning, resume.compacted ? `简历较长，已压缩为 ${resume.content.length} 字用于稳定分析。` : undefined]
+          .filter(Boolean)
+          .join(" ") || undefined,
         sessionId: response.data.sessionId,
         readinessScore: response.data.readinessScore,
       };

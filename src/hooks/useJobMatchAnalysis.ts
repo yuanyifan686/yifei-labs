@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { runMatchAgainstJobBankAction } from "@/app/apps/job-match/actions";
 import { ActionErrorCode } from "@/lib/actionState";
+import { compactResumeForAnalysis } from "@/lib/resume/compactResume";
 import {
   JobBankStats,
   JobMatch,
@@ -72,13 +73,14 @@ export function useJobMatchAnalysis() {
     setProfile(null);
 
     try {
+      const resume = compactResumeForAnalysis(options.input.resumeContent);
       const response = await runMatchAgainstJobBankAction({
         fullName: options.input.fullName,
         currentStatus: options.input.currentStatus,
         experienceLevel: options.input.experienceLevel,
         preferredLanguage: options.input.preferredLanguage,
         preferredLocation: options.input.preferredLocation,
-        resumeContent: options.input.resumeContent,
+        resumeContent: resume.content,
         directions: options.directions || [],
         regenerate: false,
         sessionId: options.sessionId || sessionId || undefined,
@@ -110,7 +112,9 @@ export function useJobMatchAnalysis() {
       setProfile(response.data.profile || null);
       return {
         ok: true,
-        warning: response.warning,
+        warning: [response.warning, resume.compacted ? `简历较长，已压缩为 ${resume.content.length} 字用于稳定分析。` : undefined]
+          .filter(Boolean)
+          .join(" ") || undefined,
         sessionId: response.data.sessionId,
       };
     } catch (error) {
