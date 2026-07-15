@@ -2,6 +2,7 @@
 export type ActionErrorCode =
   | "VALIDATION_ERROR"
   | "AI_UNAVAILABLE"
+  | "ACTION_REQUEST_FAILED"
   | "PARSE_FAILED"
   | "JOB_BANK_EMPTY"
   | "PERSIST_FAILED"

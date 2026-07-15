@@ -113,11 +113,12 @@ export function useJobMatchAnalysis() {
         warning: response.warning,
         sessionId: response.data.sessionId,
       };
-    } catch {
+    } catch (error) {
+      console.error("Job bank match request failed:", error);
       return {
         ok: false,
-        error: "岗位匹配失败，请稍后重试。",
-        code: "AI_UNAVAILABLE",
+        error: "岗位匹配请求未完成，请刷新页面后重试。",
+        code: "ACTION_REQUEST_FAILED",
       };
     } finally {
       setIsAnalyzing(false);

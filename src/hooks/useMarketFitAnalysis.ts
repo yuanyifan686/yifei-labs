@@ -91,11 +91,12 @@ export function useMarketFitAnalysis() {
         sessionId: response.data.sessionId,
         readinessScore: response.data.readinessScore,
       };
-    } catch {
+    } catch (error) {
+      console.error("Market fit request failed:", error);
       return {
         ok: false,
-        error: "市场匹配度分析失败，请稍后重试。",
-        code: "AI_UNAVAILABLE",
+        error: "市场匹配度分析请求未完成，请刷新页面后重试。",
+        code: "ACTION_REQUEST_FAILED",
       };
     } finally {
       setIsGapAnalyzing(false);

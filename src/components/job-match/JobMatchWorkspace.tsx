@@ -52,6 +52,8 @@ function recoveryHint(code?: ActionErrorCode) {
       return "岗位库为空时会尝试自动生成；也可运行 npm run seed:jobs。";
     case "AI_UNAVAILABLE":
       return "模型暂不可用时会尝试规则回退；也可稍后重试。";
+    case "ACTION_REQUEST_FAILED":
+      return "通常是页面版本过旧、刚部署后未刷新，或网络请求被中断。请先 Ctrl + F5 强刷后重试。";
     case "PERSIST_FAILED":
       return "历史记录保存失败不影响本次分析展示。";
     default:
